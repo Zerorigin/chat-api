@@ -268,7 +268,13 @@ func Handler(c *gin.Context, resp *http.Response, promptTokens int, modelName st
 			}
 		}
 
+		// fix: 尝试修复 HiAgent 大模型节点因空的 error message 结构而无法使用的问题
 		modifiedResponseBody, err := json.Marshal(textResponse)
+		old_string_to_replace := `,"error":{"message":"","type":"","param":"","code":null}`
+		modifiedResponseText := string(modifiedResponseBody)
+		modifiedResponseText = strings.Replace(modifiedResponseText, old_string_to_replace, "", -1)
+		modifiedResponseBody = []byte(modifiedResponseText)
+
 		if err != nil {
 			return ErrorWrapper(err, "remarshal_response_body_failed_reasoning", http.StatusInternalServerError), nil, ""
 		}
