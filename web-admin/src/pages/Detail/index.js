@@ -71,7 +71,7 @@ const Detail = (props) => {
                 xField: 'hour',
                 yField: 'value',
                 name: '调用次数',
-                line: { 
+                line: {
                     smooth: true,
                 },
                 point: {
@@ -90,9 +90,9 @@ const Detail = (props) => {
                 xField: 'hour',
                 yField: 'value',
                 name: '消费额',
-                line: { 
+                line: {
                     smooth: true,
-                    
+
                 },
                 point: {
                     visible: true,
@@ -102,7 +102,7 @@ const Detail = (props) => {
                             size: 6
                         }
                     },
-                    
+
                 }
             }
         ],
@@ -172,7 +172,7 @@ const Detail = (props) => {
                     stroke: '#000',
                     lineWidth: 1,
                     // Optional: Add fill color change on hover
-                    // fill: '#yourHoverColor' 
+                    // fill: '#yourHoverColor'
                 }
             },
             style: {
@@ -385,7 +385,7 @@ const Detail = (props) => {
                     updateChartUser(lineChart, data);
                     updateChartChannel(channelChart, data);
                     updateQuotaComparisonChart(typeChart, data);
-                    if (hourlyChart) { 
+                    if (hourlyChart) {
                         updateHourlyConsumptionChart(hourlyChart, data, localStartTimestamp, localEndTimestamp);
                     }
                     calculateStatsData(data);
@@ -434,9 +434,9 @@ const Detail = (props) => {
     // 更新每小时消费图表 - 现在将基于选定的时间范围
     const updateHourlyConsumptionChart = (hourlyChart, data, startTime, endTime) => {
         // Filter data based on the selected time range and type
-        const consumptionData = data.filter(item => 
-            item.type === 2 && 
-            item.created_at >= startTime && 
+        const consumptionData = data.filter(item =>
+            item.type === 2 &&
+            item.created_at >= startTime &&
             item.created_at < endTime
         );
 
@@ -480,11 +480,11 @@ const Detail = (props) => {
             const aggregatedData = hourlyConsumptionMap.get(key) || { quota: 0, count: 0 };
 
             countData.push({
-                hour: label, 
+                hour: label,
                 value: aggregatedData.count,
                 name: '调用次数'
             });
-            
+
             quotaData.push({
                 hour: label,
                 value: Number(aggregatedData.quota.toFixed(3)),
@@ -541,7 +541,7 @@ const Detail = (props) => {
             setHourlyDataChart(hourlyChart);
             await hourlyChart.renderAsync();
         }
-        
+
         await loadQuotaData(lineChart, pieChart, channelChart, typeChart, hourlyChart);
     };
 
@@ -557,7 +557,7 @@ const Detail = (props) => {
             setModalLoading(false);
         }, 300);
     };
-    
+
     const renderUserModelChart = (userData) => {
         let modelUsage = {};
         userData.forEach(item => {
@@ -567,13 +567,13 @@ const Detail = (props) => {
             modelUsage[item.model_name].count += item.count;
             modelUsage[item.model_name].quota += parseFloat(getQuotaWithUnit(item.quota)); // 直接使用 quota 数据
         });
-    
+
         const modelData = Object.keys(modelUsage).map(model => ({
             model_name: model,
             value: modelUsage[model].quota,// 确保 quota 为字符串类型
-            count: modelUsage[model].count 
+            count: modelUsage[model].count
         }));
-    
+
         const spec = {
             type: 'pie',
             data: [{ id: 'modelData', values: modelData }],
@@ -624,16 +624,16 @@ const Detail = (props) => {
                 }
             }
             };
-    
+
             new VChart(spec, { dom: 'userModelChart' }).renderAsync();
     };
-    
+
     const renderUserHourlyChart = (userData, startTime, endTime) => {
         // Filter data further by the provided time range
-        const timeFilteredUserData = userData.filter(item => 
+        const timeFilteredUserData = userData.filter(item =>
             item.created_at >= startTime && item.created_at < endTime
         );
-        
+
         const hourlyConsumptionMap = new Map();
         timeFilteredUserData.forEach(item => {
             const date = new Date(item.created_at * 1000);
@@ -673,7 +673,7 @@ const Detail = (props) => {
 
             currentTimestamp += 3600 * 1000;
         }
-        
+
         // Use 'time' for xField, matching the generated data key
         const spec = {
             type: 'common',
@@ -711,9 +711,9 @@ const Detail = (props) => {
                     xField: 'time',
                     yField: 'value',
                     name: '金额',
-                    line: { 
+                    line: {
                         smooth: true,
-                        
+
                     },
                     point: {
                         visible: true,
@@ -723,13 +723,13 @@ const Detail = (props) => {
                                 size: 5
                             }
                         },
-                        
+
                     }
                 }
             ],
             axes: [
-                { 
-                    orient: 'bottom', 
+                {
+                    orient: 'bottom',
                     type: 'band',
                     label: { rotate: 45 },
                 },
@@ -784,7 +784,7 @@ const Detail = (props) => {
              console.error(`Container with id "${CONTAINER_ID}" not found for user hourly chart.`);
         }
     };
-    
+
     const updateChartModel = (pieChart, data) => {
         let modelStatistics = {};
         for (let i = 0; i < data.length; i++) {
@@ -825,10 +825,10 @@ const Detail = (props) => {
             setModalLoading(false);
         }, 300);
     };
-    
+
     const modelHourlyChart = (modelData, startTime, endTime) => {
         // Filter data further by the provided time range
-        const timeFilteredModelData = modelData.filter(item => 
+        const timeFilteredModelData = modelData.filter(item =>
             item.created_at >= startTime && item.created_at < endTime
         );
 
@@ -908,9 +908,9 @@ const Detail = (props) => {
                     xField: 'time',
                     yField: 'value',
                     name: '金额',
-                    line: { 
+                    line: {
                         smooth: true,
-                       
+
                     },
                     point: {
                         visible: true,
@@ -920,13 +920,13 @@ const Detail = (props) => {
                                 size: 5
                             }
                         },
-                        
+
                     }
                 }
             ],
             axes: [
-                { 
-                    orient: 'bottom', 
+                {
+                    orient: 'bottom',
                     type: 'band',
                     label: { rotate: 45 },
                 },
@@ -949,7 +949,7 @@ const Detail = (props) => {
                     type: 'linear'
                 }
             ],
-            legends: { visible: true }, 
+            legends: { visible: true },
             tooltip: {
                 mark: {
                     content: [
@@ -976,11 +976,11 @@ const Detail = (props) => {
         }
         // Clear previous chart instance if exists?
         // Might need VChart instance management if re-rendering
-        let vchart = new VChart(spec, { dom: container }); 
+        let vchart = new VChart(spec, { dom: container });
         vchart.renderSync();
         window['vchart_model'] = vchart; // Use different debug name
     };
-    
+
 
     const updateChartUser = (lineChart, data) => {
         let userQuotaUsage = {};
@@ -1086,7 +1086,7 @@ const Detail = (props) => {
 
         // 检查是否所有数据都为0
         const allZero = typeDataArray.every(item => parseFloat(item.value) === 0);
-        
+
         if (allZero) {
             // 如果所有数据都为0，添加一个小的偏移量以确保饼图能够显示
             typeDataArray = typeDataArray.map(item => ({
@@ -1128,7 +1128,7 @@ const Detail = (props) => {
                                         onChange={value => handleInputChange(value, 'end_timestamp')} />
                                 </Col>
                                 <Col span={8}>
-                                    <Button type="primary" htmlType="submit" 
+                                    <Button type="primary" htmlType="submit"
                                         style={{ marginLeft: '16px' }}
                                         onClick={refresh} loading={loading}>查询</Button>
                                 </Col>
@@ -1143,7 +1143,7 @@ const Detail = (props) => {
                                 <Card bodyStyle={{ padding: '20px' }} shadows='hover'>
                                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                         <IconPriceTag size="large" style={{ color: '#1677ff', marginBottom: '8px' }} />
-                                        <Typography.Title heading={5} style={{ margin: '4px 0' }}>总销售额</Typography.Title>
+                                        <Typography.Title heading={5} style={{ margin: '4px 0' }}>总成本</Typography.Title>
                                         <Typography.Title heading={2} style={{ margin: '8px 0', color: '#1677ff' }}>{statsData.totalSales}</Typography.Title>
                                     </div>
                                 </Card>
@@ -1195,10 +1195,10 @@ const Detail = (props) => {
                                     <div style={{ height: 300 }}>
                                         <div id="type_data" style={{ width: '100%', minHeight: 300 }}></div>
                                         {statsData.totalSales === '0.0000' && (
-                                            <div style={{ 
-                                                position: 'absolute', 
-                                                top: '50%', 
-                                                left: '50%', 
+                                            <div style={{
+                                                position: 'absolute',
+                                                top: '50%',
+                                                left: '50%',
                                                 transform: 'translate(-50%, -50%)',
                                                 color: '#999',
                                                 fontSize: '14px'
@@ -1244,8 +1244,8 @@ const Detail = (props) => {
                 visible={userModalVisible}
                 onCancel={() => setUserModalVisible(false)}
                 width={1200}
-                footer={null} 
-                closable={true} 
+                footer={null}
+                closable={true}
                 style={{ top: 20 }}
             >
                 <Spin spinning={modalLoading}>
@@ -1270,8 +1270,8 @@ const Detail = (props) => {
                 visible={modelModalVisible}
                 onCancel={() => setModelModalVisible(false)}
                 width={1000}
-                footer={null} 
-                closable={true} 
+                footer={null}
+                closable={true}
                 style={{ top: 20 }}
             >
                 <Spin spinning={loading}>
