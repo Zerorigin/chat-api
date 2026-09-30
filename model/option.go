@@ -61,7 +61,7 @@ func InitOptionMap() {
 	config.OptionMap["HomePageContent"] = ""
 	config.OptionMap["Footer"] = config.Footer
 	config.OptionMap["SystemName"] = config.SystemName
-	config.OptionMap["SystemText "] = config.SystemText
+	config.OptionMap["SystemText"] = config.SystemText
 	config.OptionMap["Logo"] = config.Logo
 	config.OptionMap["ServerAddress"] = ""
 	config.OptionMap["PayAddress"] = ""
